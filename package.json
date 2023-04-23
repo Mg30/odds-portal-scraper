@@ -1,10 +1,14 @@
 {
-  "name": "odds_portal",
+  "name": "odds-portal-scraper",
   "version": "1.0.0",
   "description": "odds portal scraper",
   "main": "index.js",
   "bin": {
     "odds-portal": "index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Mg30/odds-portal-scraper"
   },
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
