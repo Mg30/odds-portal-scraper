@@ -13,9 +13,20 @@ program
 
 program
     .command('historic <leagueName> <startYear> <endYear>')
-    .description('historic scrape of odds in the give league')
-    .action(async (leagueName, startYear, endYear) => {
+    .description('historic scrape of odds in the given league')
+    .requiredOption('--output-dir <directory>', 'Output directory for JSON file')
+    .action(async (leagueName, startYear, endYear, options) => {
         const odds = await historicOdds(leagueName, startYear, endYear);
-        console.log(odds)
+        const outputDir = options.outputDir;
+        const outputFileName = `${leagueName}-${startYear}-${endYear}.json`;
+        const outputPath = path.join(outputDir, outputFileName);
+        const jsonData = JSON.stringify(odds);
+
+        try {
+            fs.writeFileSync(outputPath, jsonData);
+            console.log(`Odds data saved to ${outputPath}`);
+        } catch (err) {
+            console.error(`Failed to write odds data to ${outputPath}:`, err);
+        }
     });
 program.parse(process.argv);
