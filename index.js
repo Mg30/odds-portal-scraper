@@ -2,7 +2,7 @@
 
 import { program } from 'commander';
 import { historicOdds } from './lib/commands/index.js';
-
+import { leaguesUrlsMap } from './lib/constants.js';
 
 program
     .version('1.0.0')
@@ -29,4 +29,15 @@ program
             console.error(`Failed to write odds data to ${outputPath}:`, err);
         }
     });
+
+
+    program
+    .command('soccer-leagues')
+    .description('List the available leagues')
+    .action(() => {
+      console.log('Available leagues:');
+      Object.keys(leaguesUrlsMap).forEach((league) => {
+        console.log(`- ${league}`);
+      });
+    });    
 program.parse(process.argv);
