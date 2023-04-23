@@ -1,16 +1,15 @@
 #!/usr/bin/env node
 
 import { program } from 'commander';
-import { historicOdds } from '../lib/commands/index.js';
+import { historicOdds } from './lib/commands/index.js';
+
 
 program
-    .version('0.1.0')
-    .description('My CLI description')
-    .option('-f, --foo', 'Enable foo')
-    .option('-b, --bar <value>', 'Set bar value')
-    .action(() => {
-        console.log('Hello world');
-    });
+    .version('1.0.0')
+    .description('A CLI tool for scraping soccer odds from the odds portal site.')
+    .command('help')
+    .description('show available commands')
+    .action(() => program.help());;
 
 program
     .command('historic <leagueName> <startYear> <endYear>')
@@ -19,6 +18,4 @@ program
         const odds = await historicOdds(leagueName, startYear, endYear);
         console.log(odds)
     });
-
-
 program.parse(process.argv);
