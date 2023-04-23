@@ -15,16 +15,34 @@ To use odds-portal, run the odds-portal command followed by the subcommand you w
 
 ### Available Commands
 
+#### historic <leagueName> <startYear> <endYear>
+
 `historic <leagueName> <startYear> <endYear>`
 
-Scrape historic odds data for a given soccer league between two years. The leagueName argument should be one of the following: premier-league, ligue-1, or bundesliga. The startYear and endYear arguments should be integers representing the start and end years, respectively.
+Scrape historic odds data for a given soccer league between two years.
+
+
+* <leagueName>: The name of the soccer league to scrape odds for. Use the leagues command to see available league names.
+* <startYear>: The start year of the time range to scrape odds for (e.g. 2019).
+* <endYear>: The end year of the time range to scrape odds for (e.g. 2021).
+* --output-dir <directory>: The directory to output the scraped odds data as a JSON file.
+
 
 Example usage:
 
-`odds-portal historic premier-league 2018 2020`
+`odds-portal historic premier-league 2019 2021 --output-dir ./data`
 
-This will scrape historic odds data for the English Premier League between 2018 and 2020.
+This will scrape historic odds data for the English Premier League between 2019 and 2021.
 
+#### soccer-leagues
+
+`odds-portal soccer-leagues` 
+
+Displays a list of available soccer leagues that odds can be scraped for.
+
+Example usage:
+
+`odds-portal leagues`
 ## Contributing
 
 If you find any bugs or issues with odds-portal, please open an issue on the GitHub repository. Pull requests are also welcome!
