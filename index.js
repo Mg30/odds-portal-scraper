@@ -16,6 +16,11 @@ program
     .description('historic scrape of odds in the given league')
     .requiredOption('--output-dir <directory>', 'Output directory for JSON file')
     .action(async (leagueName, startYear, endYear, options) => {
+        if (startYear > endYear) {
+            console.error('Error: startYear must be less than to endYear');
+            return;
+        }
+
         const odds = await historicOdds(leagueName, startYear, endYear);
         const outputDir = options.outputDir;
         const outputFileName = `${leagueName}-${startYear}-${endYear}.json`;
@@ -31,13 +36,13 @@ program
     });
 
 
-    program
+program
     .command('soccer-leagues')
     .description('List the available leagues')
     .action(() => {
-      console.log('Available leagues:');
-      Object.keys(leaguesUrlsMap).forEach((league) => {
-        console.log(`- ${league}`);
-      });
-    });    
+        console.log('Available leagues:');
+        Object.keys(leaguesUrlsMap).forEach((league) => {
+            console.log(`- ${league}`);
+        });
+    });
 program.parse(process.argv);
