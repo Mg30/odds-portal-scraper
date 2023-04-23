@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 
 import { program } from 'commander';
-import { historicOdds } from './lib/commands/index.js';
+import { historicOdds, nextMatches } from './lib/commands/index.js';
 import { leaguesUrlsMap } from './lib/constants.js';
+import path from 'path';
+import fs from 'fs';
 
 program
     .version('1.0.0')
@@ -24,6 +26,26 @@ program
         const odds = await historicOdds(leagueName, startYear, endYear);
         const outputDir = options.outputDir;
         const outputFileName = `${leagueName}-${startYear}-${endYear}.json`;
+        const outputPath = path.join(outputDir, outputFileName);
+        const jsonData = JSON.stringify(odds);
+
+        try {
+            fs.writeFileSync(outputPath, jsonData);
+            console.log(`Odds data saved to ${outputPath}`);
+        } catch (err) {
+            console.error(`Failed to write odds data to ${outputPath}:`, err);
+        }
+    });
+
+program
+    .command('next-matches <leagueName>')
+    .description('scrape of odds in the given league')
+    .requiredOption('--output-dir <directory>', 'Output directory for JSON file')
+    .action(async (leagueName, options) => {
+
+        const odds = await nextMatches(leagueName);
+        const outputDir = options.outputDir;
+        const outputFileName = `${leagueName}-.json`;
         const outputPath = path.join(outputDir, outputFileName);
         const jsonData = JSON.stringify(odds);
 
