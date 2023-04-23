@@ -1,0 +1,17 @@
+{
+  "name": "odds_portal",
+  "version": "1.0.0",
+  "description": "odds portal scraper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^10.0.1",
+    "puppeteer": "^19.10.1",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  },
+  "type": "module"
+}
