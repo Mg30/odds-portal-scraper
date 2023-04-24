@@ -5,9 +5,9 @@ A CLI tool for scraping soccer odds from the odds portal site.
 
 you can install the odds-portal package globally using npm or yarn:
 
-`npm install -g odds-portal`
+`npm install -g odds-portal-scraper`
 
-`yarn global add odds-portal`
+`yarn global add odds-portal-scraper`
 
 ## Usage
 To use odds-portal, run the odds-portal command followed by the subcommand you want to use.
