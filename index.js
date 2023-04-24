@@ -7,7 +7,7 @@ import path from 'path';
 import fs from 'fs';
 
 program
-    .version('1.0.0')
+    .version('1.0.2')
     .description('A CLI tool for scraping soccer odds from the odds portal site.')
     .command('help')
     .description('show available commands')
