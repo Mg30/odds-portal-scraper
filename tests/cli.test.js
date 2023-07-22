@@ -3,14 +3,14 @@ import fs from 'fs';
 import { exec } from 'child_process'
 import { promisify } from 'util';
 import { expect } from '@jest/globals';
-
+import { exportToDir } from '../lib/exporters';
 
 
 const promisifiedExec = promisify(exec);
 
 describe('next-matches command', () => {
   const leagueName = 'premier-league';
-  const oddsFormat = 'EU Odds';
+  const oddsFormat = 'EU Oddeu';
   const outputDir = 'test-output';
 
   // Clean up any existing test output files
@@ -25,10 +25,10 @@ describe('next-matches command', () => {
     }
   });
 
-  it('should output an error if the output directory is invalid', async () => {
-    // Call the command with an invalid output directory
-    const command = promisifiedExec(`odds-portal next-matches ${leagueName} --odds-format ${oddsFormat} --output-dir /invalid/directory`)
-    await expect(command).rejects.toThrow(`format '${oddsFormat}' is not supported`);
+  it('should output an error if s3 and local option are both specified', async () => {
+    // Call the command with an invalid odd format
+    const command = promisifiedExec(`odds-portal next-matches ${leagueName} --odds-format ${oddsFormat} --local /invalid/directory --s3 bucketName`)
+    await expect(command).rejects.toThrow(`Error: Cannot use both --s3 and --local options. Choose one.`);
 
     // Expect the command to reject with an error
   }, 30000);
