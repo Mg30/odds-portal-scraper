@@ -26,12 +26,13 @@ Scrape historic odds data for a given soccer league between two years.
 * <startYear>: The start year of the time range to scrape odds for (e.g. 2019).
 * <endYear>: The end year of the time range to scrape odds for (e.g. 2021).
 * --odds-format <directory>: the desired odds format
-* --output-dir <directory>: The directory to output the scraped odds data as a JSON file.
+* --local <directory>: The directory to output the scraped odds data as a JSON file.
+* --s3 <bucketName>: The bucketName to output the scraped odds data as a JSON file.
 
 
 Example usage:
 
-`odds-portal historic premier-league 2019 2021 --output-dir ./data --odds-format eu`
+`odds-portal historic premier-league 2019 2021 --local ./data --odds-format eu`
 
 This will scrape historic odds data for the English Premier League between 2019 and 2021.
 
@@ -39,12 +40,13 @@ This will scrape historic odds data for the English Premier League between 2019 
 
 `next-matches <leagueName>`
 
-Scrape historic odds data for a given soccer league between two years.
+Scrape next matches odds data for a given soccer league between two years.
 
 
 * <leagueName>: The name of the soccer league to scrape odds for. Use the leagues command to see available league names.
 * --odds-format <directory>: the desired odds format
-* --output-dir <directory>: The directory to output the scraped odds data as a JSON file.
+* --local <directory>: The directory to output the scraped odds data as a JSON file.
+* --s3 <bucketName>: The bucketName to output the scraped odds data as a JSON file.
 
 
 Example usage:

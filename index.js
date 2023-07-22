@@ -3,11 +3,11 @@
 import { program } from 'commander';
 import { historicOdds, nextMatches } from './lib/commands/index.js';
 import { leaguesUrlsMap, oddsFormatMap } from './lib/constants.js';
-import path from 'path';
-import fs from 'fs';
+import { exportToS3, exportToDir } from './lib/exporters.js'
+
 
 program
-    .version('1.0.2')
+    .version('2.0.0')
     .description('A CLI tool for scraping soccer odds from the odds portal site.')
     .command('help')
     .description('show available commands')
@@ -17,25 +17,25 @@ program
     .command('historic <leagueName> <startYear> <endYear>')
     .description('historic scrape of odds in the given league')
     .requiredOption('--odds-format <format>', 'the desired odds format')
-    .requiredOption('--output-dir <directory>', 'Output directory for JSON file')
+    .option('--s3 <bucketName>', 'S3 bucket name to store the JSON file')
+    .option('--local <directory>', 'Local output directory for JSON file')
     .action(async (leagueName, startYear, endYear, options) => {
         if (startYear > endYear) {
             console.error('Error: startYear must be less than endYear');
             return;
         }
-        const oddsFormat = options.oddsFormat
+        const oddsFormat = options.oddsFormat;
+        if (options.s3 && options.local) {
+            console.error('Error: Cannot use both --s3 and --local options. Choose one.');
+            return;
+        } else if (options.s3) {
+            const s3Exporter = exportToS3(options.s3)
+            await historicOdds(leagueName, startYear, endYear, oddsFormat, s3Exporter);
 
-        const odds = await historicOdds(leagueName, startYear, endYear, oddsFormat);
-        const outputDir = options.outputDir;
-        const outputFileName = `${leagueName}-${startYear}-${endYear}.json`;
-        const outputPath = path.join(outputDir, outputFileName);
-        const jsonData = JSON.stringify(odds);
+        } else if (options.local) {
+            const localExport = exportToDir(options.local)
+            await historicOdds(leagueName, startYear, endYear, oddsFormat, localExport);
 
-        try {
-            fs.writeFileSync(outputPath, jsonData);
-            console.log(`Odds data saved to ${outputPath}`);
-        } catch (err) {
-            console.error(`Failed to write odds data to ${outputPath}:`, err);
         }
     });
 
@@ -43,22 +43,23 @@ program
     .command('next-matches <leagueName>')
     .description('scrape of odds in the given league')
     .requiredOption('--odds-format <format>', 'the desired odds format')
-    .requiredOption('--output-dir <directory>', 'Output directory for JSON file')
+    .option('--s3 <bucketName>', 'S3 bucket name to store the JSON file')
+    .option('--local <directory>', 'Local output directory for JSON file')
     .action(async (leagueName, options) => {
 
-        const oddsFormat = options.oddsFormat
 
-        const odds = await nextMatches(leagueName, oddsFormat);
-        const outputDir = options.outputDir;
-        const outputFileName = `${leagueName}-.json`;
-        const outputPath = path.join(outputDir, outputFileName);
-        const jsonData = JSON.stringify(odds);
+        const oddsFormat = options.oddsFormat;
+        if (options.s3 && options.local) {
+            logger.error('Error: Cannot use both --s3 and --local options. Choose one.');
+            return;
+        } else if (options.s3) {
+            const s3Exporter = exportToS3(options.s3)
+            await nextMatches(leagueName, oddsFormat, s3Exporter);
 
-        try {
-            fs.writeFileSync(outputPath, jsonData);
-            console.log(`Odds data saved to ${outputPath}`);
-        } catch (err) {
-            console.error(`Failed to write odds data to ${outputPath}:`, err);
+        } else if (options.local) {
+            const localExport = exportToDir(options.local)
+            await nextMatches(leagueName, oddsFormat, localExport);
+
         }
     });
 

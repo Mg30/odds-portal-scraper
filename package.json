@@ -1,6 +1,6 @@
 {
   "name": "odds-portal-scraper",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "odds portal scraper",
   "main": "index.js",
   "bin": {
@@ -16,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.1420.0",
     "commander": "^10.0.1",
     "puppeteer": "^19.10.1",
     "puppeteer-extra": "^3.3.6",
