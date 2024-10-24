@@ -7,7 +7,7 @@ import { exportToS3, exportToDir } from './lib/exporters.js'
 
 
 program
-    .version('2.7.0')
+    .version('2.7.1')
     .description('A CLI tool for scraping soccer odds from the odds portal site.')
     .command('help')
     .description('show available commands')
