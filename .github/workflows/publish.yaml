@@ -3,7 +3,7 @@ name: Publish Node.js Package
 on:
   push:
     tags:
-      - "*" # Triggers on all tags
+      - "v*" # Triggers on all tags
 
 jobs:
   publish:
