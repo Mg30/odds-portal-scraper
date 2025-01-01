@@ -36,11 +36,11 @@ Example usage:
 
 This will scrape historic odds data for the English Premier League between 2019 and 2021.
 
-#### next-matches <leagueName> 
+#### next-matches <leagueName>
 
 `next-matches <leagueName>`
 
-Scrape next matches odds data for a given soccer league between two years.
+Scrape next matches odds data for a given soccer league.
 
 
 * <leagueName>: The name of the soccer league to scrape odds for. Use the leagues command to see available league names.
@@ -51,9 +51,9 @@ Scrape next matches odds data for a given soccer league between two years.
 
 Example usage:
 
-`odds-portal next-matches --output-dir ./data --odds-format eu`
+`odds-portal next-matches premier-league --local ./data --odds-format eu`
 
-This will scrape historic odds data for the English Premier League between 2019 and 2021.
+This will scrape next matches odds data for the English Premier League.
 
 #### soccer-leagues
 
