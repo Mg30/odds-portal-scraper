@@ -3,7 +3,6 @@ import fs from 'fs';
 import { exec } from 'child_process'
 import { promisify } from 'util';
 import { expect } from '@jest/globals';
-import { exportToDir } from '../lib/exporters';
 
 
 const promisifiedExec = promisify(exec);
