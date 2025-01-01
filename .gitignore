@@ -3,3 +3,6 @@ node_modules/
 .npmrc
 data/
 next_matches/
+repomix.config.json
+repomix-output.md
+.repomixignore
