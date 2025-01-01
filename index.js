@@ -4,10 +4,13 @@ import { program } from 'commander';
 import { historicOdds, nextMatches } from './lib/commands/index.js';
 import { leaguesUrlsMap, oddsFormatMap } from './lib/constants.js';
 import { exportToS3, exportToDir } from './lib/exporters.js'
+import { readFileSync } from 'fs';
+
+const packageJson = JSON.parse(readFileSync(new URL('./package.json', import.meta.url)));
 
 
 program
-    .version('2.7.1')
+    .version(packageJson.version)
     .description('A CLI tool for scraping soccer odds from the odds portal site.')
     .command('help')
     .description('show available commands')
