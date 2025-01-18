@@ -42,6 +42,7 @@ describe('Scrapers Integration Tests', () => {
             expect(fileContent.scrapedAt).toBeDefined();
             expect(fileContent.homeTeam).toBeDefined();
             expect(fileContent.awayTeam).toBeDefined();
+            expect(fileContent.date).toBeDefined();
 
             expect(fileContent.mlFullTime).toBeInstanceOf(Array);
             expect(fileContent.mlFullTime.length).toBeGreaterThan(0);
