@@ -1,6 +1,6 @@
 import { expect } from '@jest/globals';
 import { nextMatchesScraper } from '../lib/scrapers.js';
-import launchPuppeteer from '../lib/puppeteer.js';
+import launchBrowser from '../lib/browser.js';
 import { writeFile, readdir, readFile, mkdtemp, rm } from 'fs/promises';
 import { tmpdir } from 'os';
 import { join } from 'path';
@@ -10,20 +10,21 @@ describe('Scrapers Integration Tests', () => {
     let tempDir;
 
     beforeAll(async () => {
-        browser = await launchPuppeteer();
+        browser = await launchBrowser();
         tempDir = await mkdtemp(join(tmpdir(), 'scrapers-test-'));
     });
 
     afterAll(async () => {
-        await browser.close();
-
+        if (browser) {
+            await browser.close();
+        }
         // Clean up the temporary directory
         await rm(tempDir, { recursive: true, force: true });
     });
 
     it('should scrape next matches and write them as JSON files', async () => {
-        const mockCallback = async (data, index) => {
-            const filePath = join(tempDir, `match-${index + 1}.json`);
+        const mockCallback = async (data, fileName) => {
+            const filePath = join(tempDir, fileName);
             await writeFile(filePath, JSON.stringify(data, null, 2));
         };
 
