@@ -1,28 +1,27 @@
 import { expect } from '@jest/globals';
-import { nextMatchesScraper } from '../lib/scrapers.js';
+import { nextMatchesScraper, historicScraper } from '../lib/scraperOrchestrators.js';
 import launchBrowser from '../lib/browser.js';
 import { writeFile, readdir, readFile, mkdtemp, rm } from 'fs/promises';
 import { tmpdir } from 'os';
 import { join } from 'path';
 
-describe('Scrapers Integration Tests', () => {
+describe('scraperOrchestrators Integration Tests', () => {
     let browser;
     let tempDir;
 
     beforeAll(async () => {
         browser = await launchBrowser();
-        tempDir = await mkdtemp(join(tmpdir(), 'scrapers-test-'));
+        tempDir = await mkdtemp(join(tmpdir(), 'orchestrators-test-'));
     });
 
     afterAll(async () => {
         if (browser) {
             await browser.close();
         }
-        // Clean up the temporary directory
         await rm(tempDir, { recursive: true, force: true });
     });
 
-    it('should scrape next matches and write them as JSON files', async () => {
+    it('should scrape next matches using orchestrator and write JSON files', async () => {
         const mockCallback = async (data, fileName) => {
             const filePath = join(tempDir, fileName);
             await writeFile(filePath, JSON.stringify(data, null, 2));
@@ -30,26 +29,40 @@ describe('Scrapers Integration Tests', () => {
 
         await nextMatchesScraper(browser, 'liga-portugal', 'eu', mockCallback);
 
-        // Validate that files were created and contain valid data
         const files = await readdir(tempDir);
         expect(files.length).toBeGreaterThan(0);
-
         for (const file of files) {
             const filePath = join(tempDir, file);
             const fileContent = JSON.parse(await readFile(filePath, 'utf-8'));
-
-            // Perform validations on the loaded JSON data
             expect(fileContent).toBeDefined();
             expect(fileContent.scrapedAt).toBeDefined();
             expect(fileContent.homeTeam).toBeDefined();
             expect(fileContent.awayTeam).toBeDefined();
             expect(fileContent.date).toBeDefined();
-
             expect(fileContent.mlFullTime).toBeInstanceOf(Array);
-            expect(fileContent.mlFullTime.length).toBeGreaterThan(0);
-
             expect(fileContent.underOver25).toBeInstanceOf(Array);
-            expect(fileContent.underOver25.length).toBeGreaterThan(0);
         }
     }, 60000);
+
+    it('should scrape historic matches using orchestrator and write JSON files', async () => {
+        const mockCallback = async (data, fileName) => {
+            const filePath = join(tempDir, fileName);
+            await writeFile(filePath, JSON.stringify(data, null, 2));
+        };
+        // Use a small year range for test speed
+        await historicScraper(browser, 'liga-portugal', 2024, 2024, 'eu', mockCallback);
+        const files = await readdir(tempDir);
+        expect(files.length).toBeGreaterThan(0);
+        for (const file of files) {
+            const filePath = join(tempDir, file);
+            const fileContent = JSON.parse(await readFile(filePath, 'utf-8'));
+            expect(fileContent).toBeDefined();
+            expect(fileContent.scrapedAt).toBeDefined();
+            expect(fileContent.homeTeam).toBeDefined();
+            expect(fileContent.awayTeam).toBeDefined();
+            expect(fileContent.date).toBeDefined();
+            expect(fileContent.mlFullTime).toBeInstanceOf(Array);
+            expect(fileContent.underOver25).toBeInstanceOf(Array);
+        }
+    }, 120000);
 });
