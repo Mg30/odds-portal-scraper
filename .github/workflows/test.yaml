@@ -30,6 +30,8 @@ jobs:
           npm install
           npx playwright install  
 
+      - name: Link CLI locally
+        run: npm link
 
       - name: Run tests
         run: npm test
