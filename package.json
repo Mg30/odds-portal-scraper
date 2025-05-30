@@ -16,9 +16,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "aws-sdk": "^2.1420.0",
+    "@aws-sdk/client-s3": "^3.0.0",
     "commander": "^10.0.1",
     "playwright": "^1.52.0",
+    "user-agent": "^1.0.4",
     "winston": "^3.8.2"
   },
   "type": "module",
