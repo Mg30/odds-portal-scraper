@@ -1,6 +1,4 @@
 import launchBrowser from '../lib/browser.js';
-import { anonymizeProxy } from 'proxy-chain';
-import { jest } from '@jest/globals';
 
 describe('StealthBrowser', () => {
     let browser;

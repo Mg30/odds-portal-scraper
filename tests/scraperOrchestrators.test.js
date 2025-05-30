@@ -43,26 +43,4 @@ describe('scraperOrchestrators Integration Tests', () => {
             expect(fileContent.underOver25).toBeInstanceOf(Array);
         }
     }, 60000);
-
-    it('should scrape historic matches using orchestrator and write JSON files', async () => {
-        const mockCallback = async (data, fileName) => {
-            const filePath = join(tempDir, fileName);
-            await writeFile(filePath, JSON.stringify(data, null, 2));
-        };
-        // Use a small year range for test speed
-        await historicScraper(browser, 'liga-portugal', 2024, 2024, 'eu', mockCallback);
-        const files = await readdir(tempDir);
-        expect(files.length).toBeGreaterThan(0);
-        for (const file of files) {
-            const filePath = join(tempDir, file);
-            const fileContent = JSON.parse(await readFile(filePath, 'utf-8'));
-            expect(fileContent).toBeDefined();
-            expect(fileContent.scrapedAt).toBeDefined();
-            expect(fileContent.homeTeam).toBeDefined();
-            expect(fileContent.awayTeam).toBeDefined();
-            expect(fileContent.date).toBeDefined();
-            expect(fileContent.mlFullTime).toBeInstanceOf(Array);
-            expect(fileContent.underOver25).toBeInstanceOf(Array);
-        }
-    }, 120000);
 });

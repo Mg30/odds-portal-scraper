@@ -2,16 +2,18 @@ import { exportToS3, exportToDir } from '../lib/exporters.js';
 import fs from 'fs';
 import path from 'path';
 import { jest } from '@jest/globals';
-import AWS from 'aws-sdk';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 
 describe('exportToS3', () => {
-    let mockPutObject;
+    let sendMock;
 
     beforeEach(() => {
-        mockPutObject = jest.fn((params, callback) => callback(null, {}));
-        AWS.S3 = jest.fn(() => ({
-            putObject: mockPutObject
-        }));
+        sendMock = jest.fn().mockResolvedValue({});
+        S3Client.prototype.send = sendMock;
+    });
+
+    afterEach(() => {
+        jest.restoreAllMocks();
     });
 
     it('should export data to S3 successfully', async () => {
@@ -22,23 +24,20 @@ describe('exportToS3', () => {
         const exporter = exportToS3(bucketName);
         await exporter(testData, fileName);
 
-        expect(mockPutObject).toHaveBeenCalledWith({
+        expect(sendMock).toHaveBeenCalledWith(expect.any(PutObjectCommand));
+        const callArg = sendMock.mock.calls[0][0].input;
+        expect(callArg).toMatchObject({
             Bucket: bucketName,
             Key: fileName,
             Body: JSON.stringify(testData),
             ContentType: 'application/json'
-        }, expect.any(Function));
+        });
     });
 
     it('should reject when S3 upload fails', async () => {
-        const error = new Error('S3 upload failed');
-        mockPutObject = jest.fn((params, callback) => callback(error, null));
-        AWS.S3 = jest.fn(() => ({
-            putObject: mockPutObject
-        }));
-
+        sendMock.mockRejectedValueOnce(new Error('S3 upload failed'));
         const exporter = exportToS3('test-bucket');
-        await expect(exporter({}, 'test.json')).rejects.toThrow(error);
+        await expect(exporter({}, 'test.json')).rejects.toThrow('S3 upload failed');
     });
 });
 
