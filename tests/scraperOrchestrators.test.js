@@ -12,14 +12,16 @@ describe('scraperOrchestrators Integration Tests', () => {
     beforeAll(async () => {
         browser = await launchBrowser();
         tempDir = await mkdtemp(join(tmpdir(), 'orchestrators-test-'));
-    });
+    }, 60000);
 
     afterAll(async () => {
         if (browser) {
             await browser.close();
         }
-        await rm(tempDir, { recursive: true, force: true });
-    });
+        if (tempDir) {
+            await rm(tempDir, { recursive: true, force: true });
+        }
+    }, 60000);
 
     it('should scrape next matches using orchestrator and write JSON files', async () => {
         const mockCallback = async (data, fileName) => {
