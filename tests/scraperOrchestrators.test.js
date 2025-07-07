@@ -29,7 +29,7 @@ describe('scraperOrchestrators Integration Tests', () => {
             await writeFile(filePath, JSON.stringify(data, null, 2));
         };
 
-        await nextMatchesScraper(browser, 'liga-portugal', 'eu', mockCallback);
+        await nextMatchesScraper(browser, 'mls', 'eu', mockCallback);
 
         const files = await readdir(tempDir);
         expect(files.length).toBeGreaterThan(0);
