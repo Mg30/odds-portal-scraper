@@ -11,27 +11,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        registry-url: 'https://registry.npmjs.org'
-        node-version: '20' # Specify your Node.js version
-        cache: 'npm'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          registry-url: 'https://registry.npmjs.org'
+          node-version: '20'
+          cache: 'npm'
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: |
+          npm ci
+          npx playwright install  
 
-    - name: Run tests
-      run: npm test
+      - name: Link CLI locally
+        run: npm link
 
-    - name: Publish package
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
-      run: npm publish
+      - name: Run tests
+        run: npm test
 
-    - name: Notify success
-      if: success()
-      run: echo "Package published successfully!"
+      - name: Publish package
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+        run: npm publish
+
+      - name: Notify success
+        if: success()
+        run: echo "Package published successfully!"
