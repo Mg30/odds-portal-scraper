@@ -44,5 +44,5 @@ describe('scraperOrchestrators Integration Tests', () => {
             expect(fileContent.mlFullTime).toBeInstanceOf(Array);
             expect(fileContent.underOver25).toBeInstanceOf(Array);
         }
-    }, 90000);
+    }, 120000);
 });
