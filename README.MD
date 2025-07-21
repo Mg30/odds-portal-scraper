@@ -1,15 +1,19 @@
+
 # Odds Portal Scraper CLI
 
-A command line tool for scraping soccer odds data from [Odds Portal](https://www.oddsportal.com/). The tool supports both historical odds data and upcoming matches across multiple leagues and formats.
+Odds Portal Scraper CLI is a powerful command line tool for extracting soccer odds data from [Odds Portal](https://www.oddsportal.com/). It supports scraping both historical and upcoming match odds across multiple leagues and formats, with flexible export options and robust error handling.
+
 
 ## Features
 
 - Scrape historical odds data for specified date ranges
-- Get odds for upcoming matches
-- Support for multiple leagues and odds formats
-- Export data to local files or S3 buckets
-- Built with Puppeteer for reliable scraping
+- Scrape odds for upcoming matches
+- Supports multiple soccer leagues and odds formats (EU, UK, US, etc.)
+- Export data to local files (JSON) or directly to AWS S3 buckets
+- Built with Playwright for fast and reliable scraping
 - Configurable logging and error handling
+- Automatic retries and input validation
+
 
 ## Installation
 
@@ -17,7 +21,8 @@ A command line tool for scraping soccer odds data from [Odds Portal](https://www
 
 - Node.js (v18 or higher)
 - npm or yarn
-- AWS CLI configured (for S3 exports)
+- AWS CLI configured (for S3 exports, if using S3)
+
 
 ### Install via npm
 
@@ -31,9 +36,10 @@ npm install -g odds-portal-scraper
 yarn global add odds-portal-scraper
 ```
 
+
 ## Usage
 
-### Commands Overview
+### Command Overview
 
 ```bash
 odds-portal [command] [options]
@@ -43,10 +49,11 @@ odds-portal [command] [options]
 
 | Command         | Description                                      |
 |-----------------|--------------------------------------------------|
-| historic        | Scrape historical odds data                     |
-| next-matches    | Scrape odds for upcoming matches                |
-| soccer-leagues  | List available leagues                          |
-| odds-format     | List supported odds formats                     |
+| historic        | Scrape historical odds data for a league         |
+| next-matches    | Scrape odds for upcoming matches in a league     |
+| soccer-leagues  | List all available soccer leagues                |
+| odds-format     | List all supported odds formats                  |
+
 
 ### Command Details
 
@@ -60,7 +67,7 @@ odds-portal historic <leagueName> <startYear> <endYear> [options]
 
 **Parameters:**
 
-- `leagueName`: Name of the league (use `soccer-leagues` command to see available options)
+- `leagueName`: Name of the league (use `soccer-leagues` to list options)
 - `startYear`: Starting year for historical data (e.g., 2020)
 - `endYear`: Ending year for historical data (e.g., 2023)
 
@@ -68,9 +75,9 @@ odds-portal historic <leagueName> <startYear> <endYear> [options]
 
 | Option          | Description                                      |
 |-----------------|--------------------------------------------------|
-| --odds-format   | Odds format (default: EU)                       |
-| --local         | Local directory to save JSON files              |
-| --s3            | S3 bucket name to upload data                   |
+| --odds-format   | Odds format (default: EU)                        |
+| --local         | Local directory to save JSON files                |
+| --s3            | S3 bucket name to upload data                     |
 
 **Example:**
 
@@ -78,35 +85,44 @@ odds-portal historic <leagueName> <startYear> <endYear> [options]
 odds-portal historic premier-league 2020 2023 --local ./data --odds-format eu
 ```
 
-#### next-matches <leagueName>
+
+#### Next Matches
 
 Scrape odds for upcoming matches in a specified league.
 
-Scrape next matches odds data for a given soccer league.
+```bash
+odds-portal next-matches <leagueName> [options]
+```
 
 **Parameters:**
 
-- `leagueName`: Name of the league (use `soccer-leagues` command to see available options)
+- `leagueName`: Name of the league (use `soccer-leagues` to list options)
 
 **Options:**
 
 | Option          | Description                                      |
 |-----------------|--------------------------------------------------|
-| --odds-format   | Odds format (default: EU)                       |
-| --local         | Local directory to save JSON files              |
-| --s3            | S3 bucket name to upload data                   |
+| --odds-format   | Odds format (default: EU)                        |
+| --local         | Local directory to save JSON files                |
+| --s3            | S3 bucket name to upload data                     |
 
-`odds-portal next-matches premier-league --local ./data --odds-format eu`
+**Example:**
 
-This will scrape next matches odds data for the English Premier League.
+```bash
+odds-portal next-matches premier-league --local ./data --odds-format eu
+```
+
+This will scrape odds for upcoming matches in the English Premier League.
+
 
 #### Soccer Leagues
 
-List all available leagues for scraping.
+List all available soccer leagues for scraping.
 
 ```bash
 odds-portal soccer-leagues
 ```
+
 
 #### Odds Formats
 
@@ -116,15 +132,19 @@ List all supported odds formats.
 odds-portal odds-format
 ```
 
+
 ## Configuration
 
 ### Environment Variables
 
+Set the following environment variables as needed:
+
 | Variable               | Description                                      |
 |------------------------|--------------------------------------------------|
-| ODDS_PORTAL_PROXY_URL  | Proxy URL for scraping                          |
-| AWS_ACCESS_KEY_ID      | AWS access key for S3 exports                   |
-| AWS_SECRET_ACCESS_KEY  | AWS secret key for S3 exports                   |
+| ODDS_PORTAL_PROXY_URL  | Proxy URL for scraping (optional)                |
+| AWS_ACCESS_KEY_ID      | AWS access key for S3 exports                    |
+| AWS_SECRET_ACCESS_KEY  | AWS secret key for S3 exports                    |
+
 
 ## Data Structure
 
@@ -161,28 +181,32 @@ Scraped data is saved in JSON format with the following structure:
 }
 ```
 
+
 ## Error Handling
 
-The tool includes comprehensive error handling with the following features:
+Odds Portal Scraper CLI includes comprehensive error handling:
 
 - Automatic retries for failed requests
 - Detailed error logging
 - Graceful shutdown on critical errors
-- Validation of input parameters
+- Input parameter validation
+
 
 ## Contributing
 
-Contributions are welcome! Please follow these steps:
+Contributions are welcome! To contribute:
 
 1. Fork the repository
 2. Create a new branch (`git checkout -b feature/your-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin feature/your-feature`)
-5. Create a new Pull Request
+4. Push to your branch (`git push origin feature/your-feature`)
+5. Open a Pull Request
+
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
 
 ## Support
 
