@@ -30,7 +30,7 @@ describe('scraperOrchestrators Integration Tests', () => {
         };
 
         // Limit to 1 match for test performance
-        await nextMatchesScraper(browser, 'champions-league', 'eu', mockCallback, 1);
+        await nextMatchesScraper(browser, 'champions-league', 'eu', mockCallback, 3);
 
         const files = await readdir(tempDir);
         expect(files.length).toBeGreaterThan(0);
@@ -45,5 +45,5 @@ describe('scraperOrchestrators Integration Tests', () => {
             expect(fileContent.mlFullTime).toBeInstanceOf(Array);
             expect(fileContent.underOver25).toBeInstanceOf(Array);
         }
-    }, 60000);
+    }, 120000);
 });
