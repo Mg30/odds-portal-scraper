@@ -9,6 +9,8 @@ jobs:
   publish:
     name: Publish to npm
     runs-on: ubuntu-latest
+    env:
+      ODDS_PORTAL_PROXY_URL: ${{ secrets.ODDS_PORTAL_PROXY_URL }}
 
     steps:
       - name: Checkout code
