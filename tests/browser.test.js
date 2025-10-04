@@ -17,7 +17,16 @@ describe('StealthBrowser', () => {
 
     it('should use proxy configuration if provided', async () => {
         browser = await launchBrowser({ proxy: 'http://test-proxy' });
-        expect(browser.config.proxy).toBe('http://test-proxy');
+        expect(browser.config.proxy).toEqual({ server: 'http://test-proxy' });
+    }, 30000);
+
+    it('should extract proxy credentials when supplied', async () => {
+        browser = await launchBrowser({ proxy: 'http://user:pass@test-proxy:1234' });
+        expect(browser.config.proxy).toEqual({
+            server: 'http://test-proxy:1234',
+            username: 'user',
+            password: 'pass',
+        });
     }, 30000);
 
     it('should create a new page with user agent and configurations', async () => {
