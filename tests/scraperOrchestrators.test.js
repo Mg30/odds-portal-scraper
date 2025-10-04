@@ -30,7 +30,7 @@ describe('scraperOrchestrators Integration Tests', () => {
         };
 
         // Limit to 1 match for test performance
-        await nextMatchesScraper(browser, 'champions-league', 'eu', mockCallback, 3);
+        await nextMatchesScraper(browser, 'liga', 'eu', mockCallback, 3);
 
         const files = await readdir(tempDir);
         expect(files.length).toBeGreaterThan(0);
