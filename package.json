@@ -1,6 +1,6 @@
 {
   "name": "odds-portal-scraper",
-  "version": "2.10.4",
+  "version": "2.10.5",
   "description": "odds portal scraper",
   "main": "index.js",
   "bin": {
