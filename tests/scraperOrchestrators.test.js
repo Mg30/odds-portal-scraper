@@ -1,5 +1,5 @@
 import { expect } from '@jest/globals';
-import { nextMatchesScraper, historicScraper } from '../lib/scraperOrchestrators.js';
+import { nextMatchesScraper } from '../lib/scraperOrchestrators.js';
 import launchBrowser from '../lib/browser.js';
 import { writeFile, readdir, readFile, mkdtemp, rm } from 'fs/promises';
 import { tmpdir } from 'os';
@@ -45,5 +45,5 @@ describe('scraperOrchestrators Integration Tests', () => {
             expect(fileContent.mlFullTime).toBeInstanceOf(Array);
             expect(fileContent.underOver25).toBeInstanceOf(Array);
         }
-    }, 120000);
+    }, 60000); // 30 seconds timeout
 });
