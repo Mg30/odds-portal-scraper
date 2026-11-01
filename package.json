@@ -1,7 +1,7 @@
 {
   "name": "odds-portal-scraper",
   "version": "2.10.5",
-  "description": "odds portal scraper",
+  "description": "Playwright-based Node.js CLI for historical and upcoming soccer odds, with JSON exports to disk or Amazon S3.",
   "main": "index.js",
   "bin": {
     "odds-portal": "index.js"
@@ -26,5 +26,19 @@
   "devDependencies": {
     "esm": "^3.2.25",
     "jest": "^29.5.0"
-  }
+  },
+  "homepage": "https://github.com/Mg30/odds-portal-scraper#readme",
+  "bugs": {
+    "url": "https://github.com/Mg30/odds-portal-scraper/issues"
+  },
+  "keywords": [
+    "oddsportal",
+    "soccer",
+    "betting-odds",
+    "web-scraping",
+    "playwright",
+    "cli",
+    "json",
+    "s3"
+  ]
 }
